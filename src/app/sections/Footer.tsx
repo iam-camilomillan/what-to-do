@@ -1,6 +1,6 @@
-const Footer = () => {
+export default function Footer() {
   return (
-    <footer className="border-t border-slate-600 px-8 py-4">
+    <footer className="border-t border-slate-700 px-8 py-4">
       <p className="text-center text-sm sm:text-base">
         <span className="text-slate-50/80">Built by</span>{" "}
         <a
@@ -22,6 +22,4 @@ const Footer = () => {
       </p>
     </footer>
   );
-};
-
-export default Footer;
+}

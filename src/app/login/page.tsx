@@ -4,7 +4,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 
 /* Component imports */
-import Logo from "@/components/Logo";
+import Logo from "@/app/components/logo";
 
 /* Supabase imports */
 import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
@@ -20,17 +20,19 @@ const Page = () => {
   const handleSubmit = async (event: FormEvent) => {
     event.preventDefault();
 
-    const { data, error } = await supabase.auth.signInWithPassword({
-      email,
-      password,
-    });
+    try {
+      await supabase.auth.signInWithPassword({
+        email,
+        password,
+      });
 
-    if (error) {
-      return console.log(error);
+      router.refresh();
+      router.push("/dashboard");
+    } catch (error) {
+      console.log(error, "Sign in error");
     }
-
-    router.push("/dashboard");
   };
+
   const handleLoginWithGoogle = () => {};
 
   return (

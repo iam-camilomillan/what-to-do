@@ -4,7 +4,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 
 /* Component imports */
-import Logo from "@/components/Logo";
+import Logo from "@/app/components/logo";
 
 /* Supabase imports */
 import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
