@@ -1,10 +1,27 @@
+import { cookies } from "next/headers";
 import Image from "next/image";
 import Link from "next/link";
+import { redirect } from "next/navigation";
 
 /* Component imports */
-import Logo from "@/components/Logo";
+import Logo from "@/app/components/logo";
 
-export default function Home() {
+/* Supabase imports */
+import { createServerComponentClient } from "@supabase/auth-helpers-nextjs";
+
+export default async function Home() {
+  const supabase = createServerComponentClient({ cookies });
+
+  /* Gets the user session */
+  const {
+    data: { session },
+  } = await supabase.auth.getSession();
+
+  /* If there is a session redirect to dashboard */
+  if (session) {
+    redirect("/dashboard");
+  }
+
   return (
     <main>
       <section className="h-screen w-full px-8 pt-32">
@@ -36,7 +53,6 @@ export default function Home() {
           </div>
 
           {/* Right side */}
-
           <Image
             src="/images/hero_image.png"
             alt="Hero image"

@@ -2,8 +2,8 @@ import "./globals.css";
 import type { Metadata } from "next";
 
 /* Component imports */
-import Navbar from "@/sections/Navbar";
-import Footer from "@/sections/Footer";
+import Navbar from "@/app/sections/navbar";
+import Footer from "@/app/sections/footer";
 
 /* Font import */
 import { Poppins } from "next/font/google";
@@ -28,10 +28,12 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${poppins.className} bg-gradient-to-b from-slate-900 to-slate-950 text-slate-50`}
+        className={`${poppins.className} bg-gradient-to-br from-slate-900 to-slate-950 text-slate-50`}
       >
         <Navbar />
+
         {children}
+
         <Footer />
       </body>
     </html>
