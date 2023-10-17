@@ -3,6 +3,7 @@ import "./globals.css";
 
 /* Font import */
 import { Poppins } from "next/font/google";
+import Footer from "./sections/footer";
 
 /* Font declaration */
 const poppins = Poppins({
@@ -27,6 +28,9 @@ export default function RootLayout({
         className={`${poppins.className} bg-gradient-to-br from-slate-900 to-slate-950 text-slate-50`}
       >
         {children}
+
+        {/* Footer */}
+        <Footer />
       </body>
     </html>
   );
