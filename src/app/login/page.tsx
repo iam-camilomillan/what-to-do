@@ -13,22 +13,19 @@ import Logo from "@/app/components/logo";
 /* Supabase imports */
 import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
 
-/* Icons imports */
-import { IconBrandGoogle } from "@tabler/icons-react";
-
 /* Types imports */
 import { type FormEvent } from "react";
+import { IconBrandGoogle } from "@tabler/icons-react";
 
 export default function Page() {
   /* Data states */
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [confirmPassword, setConfirmPassword] = useState("");
 
   /* Router */
   const router = useRouter();
 
-  /* Supabase client */
+  /* Supabase clients */
   const supabase = createClientComponentClient();
 
   /* Submit form handler */
@@ -36,24 +33,19 @@ export default function Page() {
     event.preventDefault();
 
     try {
-      /* Validates if the passwords match */
-      if (password !== confirmPassword) {
-        throw new Error("Passwords doesn't match.");
-      }
-
-      /* Signs up the user */
-      const { error } = await supabase.auth.signUp({
+      /* Logs in the user */
+      const { error } = await supabase.auth.signInWithPassword({
         email,
         password,
-        options: {
-          emailRedirectTo: "http://localhost:3000/auth/callback",
-        },
       });
 
       /* If there is an error will send it to the catch */
       if (error) {
         throw new Error(error.message);
       }
+
+      /* Refresh the route */
+      router.refresh();
 
       /* Sends to the dashboard page */
       router.push("/dashboard");
@@ -75,9 +67,9 @@ export default function Page() {
     <main>
       <section className="flex h-screen justify-center px-8 pt-24">
         <div className="flex w-full max-w-7xl flex-col items-center">
-          {/* Sign up title */}
+          {/* Log in title */}
           <h2 className="text-2xl">
-            Sign up to{" "}
+            Log in to{" "}
             <span className="font-bold">
               <Logo />
             </span>
@@ -86,7 +78,7 @@ export default function Page() {
           {/* Separator */}
           <div className="h-8" />
 
-          {/* Sign up form */}
+          {/* Log in form */}
           <form
             onSubmit={handleSubmit}
             className="flex w-full max-w-xs flex-col rounded-2xl p-4 shadow shadow-slate-600"
@@ -113,18 +105,6 @@ export default function Page() {
             />
 
             {/* Separator */}
-            <div className="h-4" />
-
-            {/* Confirm password */}
-            <label className="font-medium">Confirm password</label>
-            <input
-              type="password"
-              placeholder="examplepassword"
-              onChange={(event) => setConfirmPassword(event.target.value)}
-              className="rounded-md px-2 py-1 text-slate-900"
-            />
-
-            {/* Separator */}
             <div className="h-8" />
 
             {/* Submit button */}
@@ -132,7 +112,7 @@ export default function Page() {
               type="submit"
               className="rounded-md bg-purple-300 px-2 py-1 transition-colors duration-200 ease-in-out hover:bg-purple-300/80"
             >
-              <span className="font-medium text-slate-900">Create account</span>
+              <span className="font-medium text-slate-900">Log in</span>
             </button>
 
             {/* Separator */}
@@ -166,12 +146,12 @@ export default function Page() {
 
           {/* Already have account */}
           <p className="text-slate-50/80">
-            Already have an account?{" "}
+            Don&#39;t have an account?{" "}
             <Link
               href="/login"
               className="font-medium text-slate-50 transition-colors duration-200 ease-in-out hover:text-slate-50/80"
             >
-              Log in!
+              Register here!
             </Link>
           </p>
         </div>
