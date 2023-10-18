@@ -4,10 +4,6 @@ import { useState } from "react";
 
 /* Next imports */
 import Link from "next/link";
-import { useRouter } from "next/navigation";
-
-/* Supabase imports */
-import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
 
 /* Hooks imports */
 import useOutsideClick from "../hooks/useClickOutside";
@@ -19,6 +15,7 @@ import { IconChevronDown } from "@tabler/icons-react";
 import { type MouseEvent } from "react";
 import { type Session } from "@supabase/auth-helpers-nextjs";
 import { type Database } from "../types/database";
+import AddBoardButton from "./add-board-button";
 
 /* Boards type */
 type Board = Database["public"]["Tables"]["boards"]["Row"];
@@ -32,12 +29,6 @@ export default function NavbarNavigationLinks({
 }) {
   /* Show boards state */
   const [showBoards, setShowBoards] = useState(false);
-
-  /* Router */
-  const router = useRouter();
-
-  /* Supabase client */
-  const supabase = createClientComponentClient<Database>();
 
   /* Show boards handler */
   const handleShowBoards = (event: MouseEvent<HTMLButtonElement>) => {
@@ -53,29 +44,6 @@ export default function NavbarNavigationLinks({
 
   /* Ref for outsideClick */
   const ref = useOutsideClick(handleClickOutside);
-
-  /* Add new board handler */
-  const handleNewBoard = async () => {
-    try {
-      /* Gets the user boards */
-      const { data, error } = await supabase
-        .from("boards")
-        .insert({})
-        .select("id");
-
-      /* If there is an error will send it to the catch */
-      if (error) {
-        throw new Error(error.message);
-      }
-
-      /* If there is data and a board will push to the board link */
-      if (data?.[0]) {
-        router.push(`/dashboard/${data[0].id}`);
-      }
-    } catch (error) {
-      console.log(error);
-    }
-  };
 
   return session ? (
     <nav className="hidden items-center gap-x-1 sm:flex">
@@ -129,12 +97,7 @@ export default function NavbarNavigationLinks({
       <div className="w-1" />
 
       {/* New board button */}
-      <button
-        onClick={handleNewBoard}
-        className="rounded-md bg-purple-300 px-2 py-1 transition-colors duration-200 ease-in-out hover:bg-purple-300/80"
-      >
-        <span className="font-medium text-slate-900">New board</span>
-      </button>
+      <AddBoardButton />
     </nav>
   ) : null;
 }
